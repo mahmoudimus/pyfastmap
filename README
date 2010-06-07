@@ -1,0 +1,26 @@
+Originally implemented by Gunnar Aastrand Grimnes (http://gromgull.net)
+
+Cleaned up and PEP8'ed by Mahmoud Abdelkader (http://blog.mahmoudimus.com)
+
+
+TODO:
+  - Implemented StringMap on top of FastMap (http://flamingo.ics.uci.edu/pub/dasfaa03.pdf)
+
+
+
+FastMap
+-------
+
+FastMap is a fast algorithm for indexing, data-mining, and visualization of traditional and multimedia datasets. It maps objects into points in some k-dimensional space (k is user-defined) such that the dis-similarities are preserved.
+
+Two benefits from this mapping:
+    - efficient retrieval
+    - visualization and data-mining
+
+The objects can now be plotted as points in 2-d or 3-d space, revealing potential clusters, correlations among attributes and other regularities that data-mining typically looks for.
+
+
+StringMap
+---------
+
+Write me.
