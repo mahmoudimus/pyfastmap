@@ -6,8 +6,6 @@ review_index
 xml_reviews/*.xml
 .cache
 tmp
-apps/neocrawler/bin/crawlc
-zillion/apps/cck/templates/layout.py.bak
 .project
 .pydevproject
 \#*
@@ -17,11 +15,9 @@ zillion/apps/cck/templates/layout.py.bak
 .*.sw*
 TAGS
 tags
-milo/apps/merchant_address/sears/cookies
 *.iml
 .ropeproject
 *_flymake.py
 *,cover
 .coverage
 coverage/
-docs/api-docs/build
