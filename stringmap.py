@@ -49,7 +49,17 @@ class Matrix(object):
 
 
 class StringMap(object):
+    """StringMap iterates to find pivot strings to form d orthogonal
+    directions, and computes the cordinates of the N strings on the
+    d axes.
 
+    The algorithm assumes the dimensionality d of the target space.
+
+    StringMap takes a metric_function, any python callable that will
+    take two arguments and determines a similarity measured by a
+    metric distance.
+
+    """
     def __init__(self, string_list, dimensionality, metric_function):
         self.string_list = string_list
         self.dimensionality = dimensionality
@@ -70,7 +80,7 @@ class StringMap(object):
             dist = self.get_distance(pivot1, pivot2, axis)
             if dist == 0:
                 # set all coordinates to the h-th dimension to 0
-                self.coords.set_all_rows_for_column(axis, 0)
+                self.coords.set_all_rows_for_column(axis, to=0)
                 break
             # compute coordinates of strings on this axis
             for i in xrange(len(self.string_list)):
@@ -82,29 +92,46 @@ class StringMap(object):
         return (pow(x, 2) + pow(dist, 2) - pow(y, 2)) / (2 * dist))
 
     def choose_pivot_strings(self, axis, m=5):
-        """Chooses two pivot strings on the h-th dimension"""
-        random_string = random.choice(self.string_list)
-        random_string_idx = self.string_list.index(random_string)
+        """Chooses two pivot strings on the h-th dimension
 
-        # 2 spaces max, would be really nice to use
-        # a namedtuple for this.
-        pivots = [random_string_idx, 0]
+        The function choose_pivot_strings() selects two strings to form
+        an axis for the d-th dimension. These two strings should be as
+        far from each other as possible, and the function iterates m times
+        to find the seeds.
+
+        This is the major bottleneck in StringMap, but the cost can
+        be reduced by sampling strings to find the one furthest away
+        from the furthest away. Or, we can just stop once we find
+        a string that 'far enough' from the string, i.e. the distance
+        between the two strings is above a certain value.
+
+        """
+        # first string index
+        str_len = len(self.string_list) - 1
+        first_sidx = random.randint(0, str_len)
+        pivots = [first_sidx, 0]
         pivot_dist = [-1000000, -1000000]
+        # iterate m times
         for i in xrange(m):
             for c in [0, 1]:
-                furthest_dist_rand = self.get_distance(i, pivots[c], axis)
-                # if the distance returned is bigger than the maximum
-                # distance for a coordinate
-                if furthest_dist_rand > pivot_dist[c]:
-                    pivot_dist[c] = furthest_dist_rand
-                    pivots[c] = i
+                # get a random string
+                randidx = random.randint(c, str_len)
+                # get distance of random string from pivot `c` within
+                # dimension axis
+                dist = self.get_distance(randidx, pivots[c], axis)
+                # if the randomly chosen string's distance is furthest away
+                if dist > pivot_dist[c]:
+                    pivot_dist[c] = dist
+                    # update the furthest away from each other matrix
+                    pivots[0 if c else 1] = randidx
 
         return *pivots
 
     def get_distance(self, coord_a, coord_b, axis):
         """Get distance of two strings (indexed by coord_a and coord_b)
-        after they are projected on the first h - 1 axes
+        after they are projected on the first h - 1 axes.
 
+        It iterates over the h - 1 dimensions.
         """
         string_a = self.string_list[coord_a]
         string_b = self.string_list[coord_b]

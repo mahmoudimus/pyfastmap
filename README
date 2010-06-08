@@ -1,11 +1,9 @@
-Originally implemented by Gunnar Aastrand Grimnes (http://gromgull.net)
-
-Cleaned up and PEP8'ed by Mahmoud Abdelkader (http://blog.mahmoudimus.com)
+FastMap originally implemented by Gunnar Aastrand Grimnes (http://gromgull.net)
+StringMap and derivations are implemented by Mahmoud Abdelkader (http://blog.mahmoudimus.com)
 
 
 TODO:
-  - Implemented StringMap on top of FastMap (http://flamingo.ics.uci.edu/pub/dasfaa03.pdf)
-
+  - StringMap unit tests
 
 
 FastMap
@@ -23,4 +21,4 @@ The objects can now be plotted as points in 2-d or 3-d space, revealing potentia
 StringMap
 ---------
 
-Write me.
+StringMap is a modification of FastMap where the recursion is removed from the canonical `GetPivot()` implementation and the distance is measured in terms of a similarity function that returns a metric distance. It is a linear algorithm to d^2, where d is the dimensionality, or orthogonal directions, of the StringMap. See the reference paper: http://flamingo.ics.uci.edu/pub/dasfaa03.pdf
