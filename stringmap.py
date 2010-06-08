@@ -84,8 +84,22 @@ class StringMap(object):
     def choose_pivot_strings(self, axis, m=5):
         """Chooses two pivot strings on the h-th dimension"""
         random_string = random.choice(self.string_list)
+        random_string_idx = self.string_list.index(random_string)
 
-        return 0, 0
+        # 2 spaces max, would be really nice to use
+        # a namedtuple for this.
+        pivots = [random_string_idx, 0]
+        pivot_dist = [-1000000, -1000000]
+        for i in xrange(m):
+            for c in [0, 1]:
+                furthest_dist_rand = self.get_distance(i, pivots[c], axis)
+                # if the distance returned is bigger than the maximum
+                # distance for a coordinate
+                if furthest_dist_rand > pivot_dist[c]:
+                    pivot_dist[c] = furthest_dist_rand
+                    pivots[c] = i
+
+        return *pivots
 
     def get_distance(self, coord_a, coord_b, axis):
         """Get distance of two strings (indexed by coord_a and coord_b)
