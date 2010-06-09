@@ -137,7 +137,7 @@ class StringMap(object):
         string_b = self.string_list[coord_b]
         metric_distance = self.metric_function(string_a, string_b)
         for i in xrange(axis):
-            w = self.coords[coord_a, i] - self.coords[coord_b, i]
+            w = abs(self.coords[coord_a, i] - self.coords[coord_b, i])
             metric_distance = sqrt(abs(pow(metric_distance, 2) - pow(w, 2)))
 
         return metric_distance
